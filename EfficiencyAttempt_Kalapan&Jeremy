@@ -1,0 +1,37 @@
+from itertools import combinations
+import time  # for benchmarking
+initial = time.time()  # start time
+# find the choices of 5 ordered descending digits from 9 to 0 who add to 28
+# while we are at include those who add to 17, though it feels like that should not be needed
+comb = combinations([9, 8, 7, 6, 5, 4, 3, 2, 1, 0], 5)  # without repetition, descending
+desired_combs = []
+for i in list(comb):
+    sum_list = sum(i)
+    if sum_list == 28 or sum_list == 17:  # if ((2 * sum_list) % 11) == 1
+        desired_combs.append(i)
+# print(desired_combs)
+max_so_far = 0
+for desired_comb in desired_combs:
+    remaining_digits_descending = []
+    for i in range(9, -1, -1):  # from 9 down to 0 including 0
+        if not (i in desired_comb):
+            remaining_digits_descending.append(i)
+    # print(desired_comb)
+    # print(tuple(remaining_digits_descending))
+    assembled1 = 0
+    for digit in desired_comb:
+        assembled1 = 100 * assembled1 + digit
+    assembled2 = 0
+    for digit in remaining_digits_descending:
+        assembled2 = 100 * assembled2 + digit
+    max_so_far = max(max_so_far, 10 * assembled1 + assembled2)
+    # print(10 * assembled1 + assembled2)
+    # print()
+print("largest: ", max_so_far)
+final = time.time()
+format_float = "{:.15f}".format(final - initial)
+print("time: " + format_float)
+     
+
+
+
